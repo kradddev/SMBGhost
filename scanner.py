@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import socket
 import struct
 import sys
@@ -7,23 +9,32 @@ pkt = b'\x00\x00\x00\xc0\xfeSMB@\x00\x00\x00\x00\x00\x00\x00\x00\x00\x1f\x00\x00
 
 subnet = sys.argv[1]
 
-for ip in IPNetwork(subnet):
+f=open('ipsSMBV3.txt','r')
+c=f.readlines()
 
-    sock = socket.socket(socket.AF_INET)
-    sock.settimeout(3)
+ipsList=[]
+i = 0
 
-    try:
-        sock.connect(( str(ip),  445 ))
-    except:
-        sock.close()
-        continue
+for ip in c:
+	ipsList = c
+	for ip in IPNetwork(ipsList[i]):
+		i += 1
+		sock = socket.socket(socket.AF_INET)
+		sock.settimeout(3)
 
-    sock.send(pkt)
+		try:
+			sock.connect(( str(ip),  445 ))
+		except:
+			sock.close()
+			continue
 
-    nb, = struct.unpack(">I", sock.recv(4))
-    res = sock.recv(nb)
+		sock.send(pkt)
 
-    if res[68:70] != b"\x11\x03" or res[70:72] != b"\x02\x00":
-        print(f"{ip} Not vulnerable.")
-    else:
-        print(f"{ip} Vulnerable")
+		nb, = struct.unpack(">I", sock.recv(4))
+		res = sock.recv(nb)
+		
+		if res[68:70] != b"\x11\x03" or res[70:72] != b"\x02\x00":
+			print(f"{ip} Not vulnerable.")
+		else:
+			print(f"{ip} Vulnerable")
+f.close()
