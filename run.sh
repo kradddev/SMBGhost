@@ -27,7 +27,7 @@ then
     echo "${redc}[-] Nmap is not installed${resetc}"
     read -p "Do you want install it? (Y/N)" inmap
     
-    if [ "$inmap" == "Y" || "$inmap" == "y" ]; 
+    if [[ "$inmap" == "Y" | "$inmap" == "y" ]]; 
     then
         requirements
     else
