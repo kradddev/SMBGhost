@@ -31,7 +31,7 @@ then
     then
         requirements
     else
-        echo "${yellowc}[-] Exiting...${resetc}"
+        echo "${yellowc}[*] Exiting...${resetc}"
         exit 0;
     fi
 else
@@ -42,7 +42,7 @@ read -p "Type network ip (Example: 10.10.10.0): " ip
 read -p "Type network mask (Example: /24): " mask
 
 clear
-echo "${greenc}[+] Running nmap...${resetc}"
+echo "${greenc}[*] Running nmap...${resetc}"
 nmap -n -sn $ip"/"$mask -oG - | awk '/Up$/{print $2}' > ipsSMBV3.txt
 if [ $? -eq 1 ];
 then
@@ -50,7 +50,7 @@ then
     exit 1;
 fi
 
-echo "${greenc}[+] Running Scanner.py...${resetc}"
+echo "${greenc}[*] Running Scanner.py...${resetc}"
 python3 scanner.py ipsSMBV3.txt
 if [ $? -eq 1 ];
 then
